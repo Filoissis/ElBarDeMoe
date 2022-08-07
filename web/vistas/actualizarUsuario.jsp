@@ -127,9 +127,9 @@
                             </a>
                             <ul class="treeview-menu">
                                 <li><a href="#"><i class="fa fa-archive"></i>Pedidos</a></li>
-                                <li><a href="#"><i class="fa fa-cube"></i>Productos</a></li>
+                                <li><a href="srvProducto?accion=listarProductos"><i class="fa fa-cube"></i>Productos</a></li>
                                 <li><a href="srvProveedor?accion=listarProveedores"><i class="fa fa-truck"></i>Proveedores</a></li>
-                                <li><a href=""><i class="fa fa-user-plus"></i>Empleados</a></li>
+                                <li><a href="srvEmpleado?accion=listarEmpleados"><i class="fa fa-user-plus"></i>Empleados</a></li>
                                 <li><a href="srvUsuario?accion=listarUsuarios"><i class="fa fa-address-card"></i>Usuarios</a></li>
                             </ul>
                         </li>

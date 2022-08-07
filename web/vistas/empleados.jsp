@@ -130,8 +130,8 @@
                                 <li><a href="#"><i class="fa fa-archive"></i>Pedidos</a></li>
                                 <li><a href="srvProducto?accion=listarProductos"><i class="fa fa-cube"></i>Productos</a></li>
                                 <li><a href="srvProveedor?accion=listarProveedores"><i class="fa fa-truck"></i>Proveedores</a></li>
-                                <li><a href="srvEmpleado?accion=listarEmpleados"><i class="fa fa-user-plus"></i>Empleados</a></li>
-                                <li class="active"><a href="srvUsuario?accion=listarUsuarios"><i class="fa fa-address-card"></i>Usuarios</a></li>
+                                <li class="active"><a href="srvEmpleado?accion=listarEmpleados"><i class="fa fa-user-plus"></i>Empleados</a></li>
+                                <li><a href="srvUsuario?accion=listarUsuarios"><i class="fa fa-address-card"></i>Usuarios</a></li>
                             </ul>
                         </li>
                         <li class="treeview">
@@ -165,61 +165,58 @@
             <!-- Content Wrapper. Contains page content -->
             <div class="content-wrapper">
                 <section class="content-header">
-                    <h1>Gestión de Usuarios</h1>
+                    <h1>Gestión de Empleados</h1>
                 </section>
                 <!-- Content Header (Page header) -->
                 <section class="content-header">
-                    <a href="srvUsuario?accion=nuevo" class="btn btn-success">
-                        <i class="fa fa-plus"></i> Nuevo Usuario </a>
+                    <a href="srvEmpleado?accion=nuevoEmpleado" class="btn btn-success">
+                        <i class="fa fa-plus"></i> Nuevo Empleado </a>
 
                     <ol class="breadcrumb">
                         <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
-                        <li class="active">Usuarios</li>
+                        <li class="active">Empleados</li>
                     </ol>
                 </section>
 
                 <section class="content">
                     <div class="box">    
                         <div class="box-header with-border">             
-                            <h3 class="box-title">Listado de Usuarios</h3>
+                            <h3 class="box-title">Listado de Empleados</h3>
                         </div>
                         <div class="box-body">
                             <div class="table-responsive" >                                 
-                                <table class="table table-bordered table-striped dataTable table-hover" id="tablaUsuarios" class="display">
+                                <table class="table table-bordered table-striped dataTable table-hover" id="tablaEmpleados" class="display">
                                     <thead>
                                         <tr>
-                                            <th>IDUsuario</th>
-                                            <th>Usuario</th>
-                                            <th>Clave</th>
-                                            <th>Estado</th>
-                                            <th>Cargo</th>
+                                            <th>IdEmpleado</th>
+                                            <th>Nombre</th>
+                                            <th>Apellido</th>
+                                            <th>Documento</th>
+                                            <th>Teléfono</th>
+                                            <th>Salario</th>
                                             <th>Acciones</th> 
                                         </tr>
                                     </thead>
-                                    <c:forEach var="user" items="${usuarios}" varStatus="iteracion">                                                    
+                                    <c:forEach var="empl" items="${empleados}" varStatus="iteracion">                                                    
                                         <tr>
                                             <td>${iteracion.index + 1}</td>
-                                            <td>${user.nombreUsuario}</td>
-                                            <td>${user.clave}</td>
-                                            <c:if test="${user.estado == true}">
-                                                <td><span class="badge bg-green active">Usuario Activo</span></td> 
-                                            </c:if>
-                                            <c:if test="${user.estado == false}">
-                                                <td><span class="badge bg-red active">Usuario Inactivo</span></td> 
-                                            </c:if>
-                                            <td>${user.cargo.nombreCargo}</td>
-                                            <td><a href="<c:url value="srvUsuario">
-                                                       <c:param name="accion" value="leerUsuario" />
-                                                       <c:param name="cod" value="${user.idUsuario}" />
+                                            <td>${empl.nombreEmpleado}</td>
+                                            <td>${empl.apellidoEmpleado}</td>
+                                            <td>${empl.documentoEmpleado}</td>
+                                            <td>${empl.telefonoEmpleado}</td>
+                                            <td>${empl.salarioEmpleado}</td>
+                                            <td><a href="<c:url value="srvEmpleado">
+                                                       <c:param name="accion" value="leerEmpleado" />
+                                                       <c:param name="cod" value="${empl.idEmpleado}" />
                                                    </c:url>"><button type="button" class="btn btn-warning" data-toggle="tooltip"  title="Editar" data-original-title="Editar">
                                                         <i class="fa fa-pencil"></i></button></a>
                                                 <!-- DESACTIVAR / ACTIVAR USUARIOS -->
                                                 
                                                 <!-- ELIMINAR USUARIOS -->
-                                                <input type="hidden" id="codigo" value="${user.idUsuario}">
-                                                <a id="deleteUser" href="<c:url value="srvUsuario">
-                                                       <c:param name="accion" value="eliminarUsuario" />
-                                                       <c:param name="cod" value="${user.idUsuario}" />
+                                                <input type="hidden" id="codigo" value="${empl.idEmpleado}">
+                                                <a id="deleteUser" href="<c:url value="srvEmpleado">
+                                                       <c:param name="accion" value="eliminarEmpleado" />
+                                                       <c:param name="cod" value="${empl.idEmpleado}" />
                                                    </c:url>"><button type="button" class="btn btn-danger" data-toggle="tooltip"  title="Eliminar" data-original-title="Eliminar">
                                                         <i class="fa fa-trash"></i></button></a>
 
@@ -244,7 +241,7 @@
             <footer class="main-footer">
                 <!-- To the right -->
                 <div class="pull-right hidden-xs">
-                    Anything you want
+                    Issis Rodriguez, Jennifer Delgado, Deisy Matiz 
                 </div>
                 <!-- Default to the left -->
                 <strong>Copyright &copy; 2020 <a href="#">SENA</a>.</strong> Todos los derechos reservados.
@@ -266,11 +263,11 @@
         <script src="bower_components/datatables.net/js/jquery.dataTables.min.js" type="text/javascript"></script>
         <script src="bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js" type="text/javascript"></script>
         <script src="sweetalert/sweetalert.js" type="text/javascript"></script>
-        <script src="js/funcionesUsuario.js" type="text/javascript"></script>
+        
         
         <script>
             $(document).ready(function () {
-                $('#tablaUsuarios').DataTable();
+                $('#tablaEmpleados').DataTable();
             });
         </script>
         <!-- Optionally, you can add Slimscroll and FastClick plugins.

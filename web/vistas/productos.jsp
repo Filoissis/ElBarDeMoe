@@ -1,6 +1,6 @@
 <%-- 
     Document   : index
-    Created on : 18/06/2022, 06:15:33 PM
+    Created on : 06/08/2022, 06:15:33 PM
     Author     : Issis Rodriguez, Jennifer Delgado Lozano, Deisy Juliana Matiz Gutierrez
 --%>
 
@@ -128,10 +128,10 @@
                             </a>
                             <ul class="treeview-menu">
                                 <li><a href="#"><i class="fa fa-archive"></i>Pedidos</a></li>
-                                <li><a href="srvProducto?accion=listarProductos"><i class="fa fa-cube"></i>Productos</a></li>
+                                <li class="active"><a href="srvProducto?accion=listarProductos"><i class="fa fa-cube"></i>Productos</a></li>
                                 <li><a href="srvProveedor?accion=listarProveedores"><i class="fa fa-truck"></i>Proveedores</a></li>
                                 <li><a href="srvEmpleado?accion=listarEmpleados"><i class="fa fa-user-plus"></i>Empleados</a></li>
-                                <li class="active"><a href="srvUsuario?accion=listarUsuarios"><i class="fa fa-address-card"></i>Usuarios</a></li>
+                                <li><a href="srvUsuario?accion=listarUsuarios"><i class="fa fa-address-card"></i>Usuarios</a></li>
                             </ul>
                         </li>
                         <li class="treeview">
@@ -165,61 +165,58 @@
             <!-- Content Wrapper. Contains page content -->
             <div class="content-wrapper">
                 <section class="content-header">
-                    <h1>Gestión de Usuarios</h1>
+                    <h1>Gestión de Productos</h1>
                 </section>
                 <!-- Content Header (Page header) -->
                 <section class="content-header">
-                    <a href="srvUsuario?accion=nuevo" class="btn btn-success">
-                        <i class="fa fa-plus"></i> Nuevo Usuario </a>
+                    <a href="srvProducto?accion=nuevoProducto" class="btn btn-success">
+                        <i class="fa fa-plus"></i> Nuevo Producto </a>
 
                     <ol class="breadcrumb">
                         <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
-                        <li class="active">Usuarios</li>
+                        <li class="active">Productos</li>
                     </ol>
                 </section>
 
                 <section class="content">
                     <div class="box">    
                         <div class="box-header with-border">             
-                            <h3 class="box-title">Listado de Usuarios</h3>
+                            <h3 class="box-title">Listado de Productos en Inventario</h3>
                         </div>
                         <div class="box-body">
                             <div class="table-responsive" >                                 
-                                <table class="table table-bordered table-striped dataTable table-hover" id="tablaUsuarios" class="display">
+                                <table class="table table-bordered table-striped dataTable table-hover" id="tablaProductos" class="display">
                                     <thead>
                                         <tr>
-                                            <th>IDUsuario</th>
-                                            <th>Usuario</th>
-                                            <th>Clave</th>
-                                            <th>Estado</th>
-                                            <th>Cargo</th>
+                                            <th>IdProducto</th>
+                                            <th>Tipo</th>
+                                            <th>Marca</th>
+                                            <th>Inventario</th>
+                                            <th>Costo Unitario</th>
+                                            <th>Precio Venta</th>
                                             <th>Acciones</th> 
                                         </tr>
                                     </thead>
-                                    <c:forEach var="user" items="${usuarios}" varStatus="iteracion">                                                    
+                                    <c:forEach var="prodc" items="${productos}" varStatus="iteracion">                                                    
                                         <tr>
                                             <td>${iteracion.index + 1}</td>
-                                            <td>${user.nombreUsuario}</td>
-                                            <td>${user.clave}</td>
-                                            <c:if test="${user.estado == true}">
-                                                <td><span class="badge bg-green active">Usuario Activo</span></td> 
-                                            </c:if>
-                                            <c:if test="${user.estado == false}">
-                                                <td><span class="badge bg-red active">Usuario Inactivo</span></td> 
-                                            </c:if>
-                                            <td>${user.cargo.nombreCargo}</td>
-                                            <td><a href="<c:url value="srvUsuario">
-                                                       <c:param name="accion" value="leerUsuario" />
-                                                       <c:param name="cod" value="${user.idUsuario}" />
+                                            <td>${prodc.tipoProducto}</td>
+                                            <td>${prodc.marcaProducto}</td>
+                                            <td>${prodc.inventarioProducto}</td>
+                                            <td>${prodc.costoUnitario}</td>
+                                            <td>${prodc.precioVenta}</td>
+                                            <td><a href="<c:url value="srvProducto">
+                                                       <c:param name="accion" value="leerProducto" />
+                                                       <c:param name="cod" value="${prodc.idProducto}" />
                                                    </c:url>"><button type="button" class="btn btn-warning" data-toggle="tooltip"  title="Editar" data-original-title="Editar">
                                                         <i class="fa fa-pencil"></i></button></a>
                                                 <!-- DESACTIVAR / ACTIVAR USUARIOS -->
                                                 
                                                 <!-- ELIMINAR USUARIOS -->
-                                                <input type="hidden" id="codigo" value="${user.idUsuario}">
-                                                <a id="deleteUser" href="<c:url value="srvUsuario">
-                                                       <c:param name="accion" value="eliminarUsuario" />
-                                                       <c:param name="cod" value="${user.idUsuario}" />
+                                                <input type="hidden" id="codigo" value="${prodc.idProducto}">
+                                                <a id="deleteUser" href="<c:url value="srvProducto">
+                                                       <c:param name="accion" value="eliminarProducto" />
+                                                       <c:param name="cod" value="${prodc.idProducto}" />
                                                    </c:url>"><button type="button" class="btn btn-danger" data-toggle="tooltip"  title="Eliminar" data-original-title="Eliminar">
                                                         <i class="fa fa-trash"></i></button></a>
 
@@ -244,10 +241,10 @@
             <footer class="main-footer">
                 <!-- To the right -->
                 <div class="pull-right hidden-xs">
-                    Anything you want
+                    Issis Rodriguez, Jennifer Delgado, Deisy Matiz 
                 </div>
                 <!-- Default to the left -->
-                <strong>Copyright &copy; 2020 <a href="#">SENA</a>.</strong> Todos los derechos reservados.
+                <strong>Copyright &copy; 2022 <a href="#">SENA</a>.</strong> Todos los derechos reservados.
             </footer>
 
             <div class="control-sidebar-bg"></div>
@@ -266,11 +263,11 @@
         <script src="bower_components/datatables.net/js/jquery.dataTables.min.js" type="text/javascript"></script>
         <script src="bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js" type="text/javascript"></script>
         <script src="sweetalert/sweetalert.js" type="text/javascript"></script>
-        <script src="js/funcionesUsuario.js" type="text/javascript"></script>
+        
         
         <script>
             $(document).ready(function () {
-                $('#tablaUsuarios').DataTable();
+                $('#tablaProductos').DataTable();
             });
         </script>
         <!-- Optionally, you can add Slimscroll and FastClick plugins.
