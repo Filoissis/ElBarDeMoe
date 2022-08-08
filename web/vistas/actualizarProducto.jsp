@@ -37,7 +37,7 @@
 
             <!-- Main Header -->
             <header class="main-header">
-                <a href="#" class="logo">
+                <a href="" class="logo">
                     <!-- mini logo for sidebar mini 50x50 pixels -->
                     <span class="logo-mini"><b>S</b>BL</span>
                     <!-- logo for regular state and mobile devices -->
@@ -126,7 +126,7 @@
                                 </span>
                             </a>
                             <ul class="treeview-menu">
-                                <li><a href="#"><i class="fa fa-archive"></i>Pedidos</a></li>
+                                <li><a href="srvPedido?accion=listarPedidos"><i class="fa fa-archive"></i>Pedidos</a></li>
                                 <li><a href="srvProducto?accion=listarProductos"><i class="fa fa-cube"></i>Productos</a></li>
                                 <li><a href="srvProveedor?accion=listarProveedores"><i class="fa fa-truck"></i>Proveedores</a></li>
                                 <li class="active"><a href="srvEmpleado?accion=listarEmpleados"><i class="fa fa-user-plus"></i>Empleados</a></li>

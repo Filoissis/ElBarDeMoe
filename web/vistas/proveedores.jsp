@@ -127,7 +127,7 @@
                                 </span>
                             </a>
                             <ul class="treeview-menu">
-                                <li><a href="#"><i class="fa fa-archive"></i>Pedidos</a></li>
+                                <li><a href="srvPedido?accion=listarPedidos"><i class="fa fa-archive"></i>Pedidos</a></li>
                                 <li><a href="srvProducto?accion=listarProductos"><i class="fa fa-cube"></i>Productos</a></li>
                                 <li class="active"><a href="srvProveedor?accion=listarProveedores"><i class="fa fa-truck"></i>Proveedores</a></li>
                                 <li><a href="srvEmpleado?accion=listarEmpleados"><i class="fa fa-user-plus"></i>Empleados</a></li>
@@ -242,7 +242,7 @@
                     Issis Rodriguez, Jennifer Delgado, Deisy Matiz 
                 </div>
                 <!-- Default to the left -->
-                <strong>Copyright &copy; 2020 <a href="#">SENA</a>.</strong> Todos los derechos reservados.
+                <strong>Copyright &copy; 2022 <a href="#">SENA</a>.</strong> Todos los derechos reservados.
             </footer>
 
             <div class="control-sidebar-bg"></div>

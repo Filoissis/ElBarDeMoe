@@ -52,7 +52,9 @@ public class srvUsuario extends HttpServlet {
                     case "eliminarUsuario":
                         eliminarUsuario(request, response);
                         break;
-
+                    case "index":
+                        index(request, response);
+                        break;
                     default:
                         response.sendRedirect("identificar.jsp");
                 }
@@ -123,6 +125,20 @@ public class srvUsuario extends HttpServlet {
         }else if(usuario != null && usuario.getCargo().getNombreCargo().equals("Vendedor")){
            sesion = request.getSession();
             sesion.setAttribute("vendedor", usuario);
+            this.getServletConfig().getServletContext().getRequestDispatcher("/vistas/formVendedor.jsp").forward(request, response); 
+        }else{
+            request.setAttribute("msje", "Credenciales Incorrectas");
+            request.getRequestDispatcher("identificar.jsp").forward(request, response);
+        }
+    }
+    
+    private void index(HttpServletRequest request, HttpServletResponse response) throws Exception{
+        HttpSession sesion = request.getSession();
+        String ses = sesion.getAttribute("usuario").toString();
+        
+        if (ses.equals("Administrador")) {
+            this.getServletConfig().getServletContext().getRequestDispatcher("/vistas/index.jsp").forward(request, response);
+        }else if(ses.equals("Vendedor")){
             this.getServletConfig().getServletContext().getRequestDispatcher("/vistas/formVendedor.jsp").forward(request, response); 
         }else{
             request.setAttribute("msje", "Credenciales Incorrectas");

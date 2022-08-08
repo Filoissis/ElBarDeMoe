@@ -23,7 +23,8 @@
         <link rel="stylesheet" href="bower_components/Ionicons/css/ionicons.min.css">
         <!-- Theme style -->
         <link href="dist/css/AdminLTE.min.css" rel="stylesheet" type="text/css"/>
-
+        <link href="bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet" type="text/css"/>
+        <link href="sweetalert/sweetalert.css" rel="stylesheet" type="text/css"/>
         <!-- AdminLTE Skins. We have chosen the skin-blue for this starter
               page. However, you can choose any other skin. Make sure you
               apply the skin class to the body tag so the changes take effect. -->
@@ -118,16 +119,16 @@
                     <ul class="sidebar-menu" data-widget="tree">
                         <li class="header">INICIO</li>
                         <!-- Optionally, you can add icons to the links -->
-                        <li class="active"><a href="#"><i class="fa fa-link"></i> <span>Panel Administrativo</span></a></li>
-                        <li class="treeview">
+                        <li><a href="#"><i class="fa fa-link"></i> <span>Panel Administrativo</span></a></li>
+                        <li class="treeview active">
                             <a href="#"><i class="glyphicon glyphicon-th-large"></i> <span>Registros</span>
                                 <span class="pull-right-container">
                                     <i class="fa fa-angle-left pull-right"></i>
                                 </span>
                             </a>
                             <ul class="treeview-menu">
-                                <li><a href="srvPedido?accion=listarPedidos"><i class="fa fa-archive"></i>Pedidos</a></li>
-                                <li class="active"><a href="srvProducto?accion=listarProductos"><i class="fa fa-cube"></i>Productos</a></li>
+                                <li class="active"><a href="srvPedido?accion=listarPedidos"><i class="fa fa-archive"></i>Pedidos</a></li>
+                                <li><a href="srvProducto?accion=listarProductos"><i class="fa fa-cube"></i>Productos</a></li>
                                 <li><a href="srvProveedor?accion=listarProveedores"><i class="fa fa-truck"></i>Proveedores</a></li>
                                 <li><a href="srvEmpleado?accion=listarEmpleados"><i class="fa fa-user-plus"></i>Empleados</a></li>
                                 <li><a href="srvUsuario?accion=listarUsuarios"><i class="fa fa-address-card"></i>Usuarios</a></li>
@@ -161,83 +162,99 @@
             </aside>
 
             <!-- Content Wrapper. Contains page content -->
+            <!-- Content Wrapper. Contains page content -->
             <div class="content-wrapper">
                 <section class="content-header">
-                    <div class="row">
-                        <div class="col-xs-12 col-md-3">
+                    <h1>Gestión de Pedidos</h1>
+                </section>
+                <!-- Content Header (Page header) -->
+                <section class="content-header">
+                    <a href="srvPedido?accion=nuevoPedido" class="btn btn-success">
+                        <i class="fa fa-plus"></i> Nuevo Pedido </a>
+
+                    <ol class="breadcrumb">
+                        <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
+                        <li class="active">Pedidos</li>
+                    </ol>
+                </section>
+
+                <section class="content">
+                    <div class="box">    
+                        <div class="box-header with-border">             
+                            <h3 class="box-title">Listado de Pedidos Realizados</h3>
                         </div>
-                        <div class="col-md-3 hidden-xs"></div>
-                        <div class="col-xs-2 col-md-1">
-                        </div>
-                        <div class="col-xs-10 col-md-5 ">
-                            <div class="btn-group pull-right">
-                                <a href="srvProducto?accion=listarProductos" class="btn btn-default">
-                                    <i class="fa fa-align-justify"></i> Ver listado</a>                                              
+                        <div class="box-body">
+                            <div class="table-responsive" >                                 
+                                <table class="table table-bordered table-striped dataTable table-hover" id="tablaProductos" class="display">
+                                    <thead>
+                                        <tr>
+                                            <th>IdPedido</th>
+                                            <th>Tipo</th>
+                                            <th>Marca</th>
+                                            <th>Cantidad</th>
+                                            <th>Costo Total</th>
+                                            <th>Fecha</th>
+                                            <th>Estado</th>
+                                            <th>Proveedor</th> 
+                                            <th>Empleado</th> 
+                                        </tr>
+                                    </thead>
+                                    <c:forEach var="ped" items="${pedidos}" varStatus="iteracion">                                                    
+                                        <tr>
+                                            <td>${iteracion.index + 1}</td>
+                                            <td>${ped.tipoProdPedido}</td>
+                                            <td>${ped.marcaProdPedido}</td>
+                                            <td>${ped.cantidadPedido}</td>
+                                            <td>${ped.costoTotal}</td>
+                                            <td>${ped.fechaPedido}</td>
+                                            
+                                            <c:if test="${ped.estadoPedido == true}">
+                                                <td><span class="badge bg-green active">Pedido Activo</span></td> 
+                                            </c:if>
+                                            <c:if test="${ped.estadoPedido == false}">
+                                                <td><span class="badge bg-orange active">Pedido Entregado</span></td> 
+                                            </c:if>
+                                                
+                                            <td>${ped.proveedor.nombreProveedor}</td>
+                                            <td>${ped.empleado.apellidoEmpleado}</td>
+                                            
+                                            <td><a href="<c:url value="srvPedido">
+                                                       <c:param name="accion" value="leerPedido" />
+                                                       <c:param name="cod" value="${ped.idPedido}" />
+                                                   </c:url>"><button type="button" class="btn btn-warning" data-toggle="tooltip"  title="Editar" data-original-title="Editar">
+                                                        <i class="fa fa-pencil"></i></button></a>
+                                                <!-- DESACTIVAR / ACTIVAR USUARIOS -->
+                                                <c:choose>
+                                                    <c:when test="${ped.estadoPedido == true}">
+                                                        <input type="hidden" id="item" value="${ped.idPedido}">
+                                                        <a id="desactivarUsuario" href="srvPedido?cambiar=desactivar&cod=${ped.idPedido}" class="btn btn-info"  data-toggle="tooltip" title="Entregado" data-original-title="Entregado">
+                                                            <i class="glyphicon glyphicon-ok"></i></a>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                        <input type="hidden" id="item" value="${ped.idPedido}">
+                                                        <a id="activarUsuario" href="srvPedido?cambiar=activar&cod=${ped.idPedido}" class="btn btn-success" data-toggle="tooltip" title="ReActivar" data-original-title="ReActivar">
+                                                            <i class="glyphicon glyphicon-plane"></i></a>
+                                                        </c:otherwise>
+                                                    </c:choose>
+
+                                                
+                                                <!-- ELIMINAR USUARIOS -->
+                                                
+
+                                            </td>
+                                        </tr>                                                    
+                                    </c:forEach>                                               
+                                </table>
                             </div>
                         </div>
+                        <!-- /.box-body -->
+                        <div class="box-footer">
+                            <!--Pie de página-->
+                        </div>
+                        <!-- /.box-footer-->
                     </div>
                 </section>
-                <section class="content">
-                    <div class="box">
-                        <div class="box-header with-border">
-                            <i class="fa fa-edit"></i> <h3 class="box-title">Registrar Nuevo Producto</h3>  
-                        </div>
-                        <form class="form-horizontal" action="srvProducto?accion=registrarProducto" method="post">
-                            <div class="box-body">
-                                <div class="form-group">
-                                    <label class="col-sm-2 control-label">Tipo de Producto</label>
-                                    <div class="col-sm-4 input-group">
-                                        <span class="input-group-addon"><i class="fa fa-user"></i></span>
-                                        <input id="nombre" type="text" class="form-control" placeholder="Ejem: Cerveza" name="txtTipo" maxlength="50"
-                                               value="">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-2 control-label">Marca del Producto</label>
-                                    <div class="col-sm-4 input-group">
-                                        <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-                                        <input id="nombre" type="text" class="form-control" placeholder="Ejem: Club Colombia" name="txtMarca" maxlength="50"
-                                               value="">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-2 control-label">Cantidad de Inventario</label>
-                                    <div class="col-sm-4 input-group">
-                                        <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-                                        <input id="nombre" type="text" class="form-control" placeholder="Ejem: 50" name="txtInventario" maxlength="10"
-                                               value="">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-2 control-label">Costo Unitario</label>
-                                    <div class="col-sm-4 input-group">
-                                        <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-                                        <input id="nombre" type="text" class="form-control" placeholder="Ejem: $2500" name="txtCosto" maxlength="10"
-                                               value="">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-2 control-label">Precio de Venta</label>
-                                    <div class="col-sm-4 input-group">
-                                        <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-                                        <input id="nombre" type="text" class="form-control" placeholder="Ejem: $5000" name="txtPrecio" maxlength="7"
-                                               value="">
-                                    </div>
-                                </div>
-                                
-                            </div>
-                            <!-- /.box-body -->
-                            <div class="box-footer">
-                                <!--button type="reset" class="btn btn-danger"><i class="fa fa-close red" oncancel="srvUsuario?accion=listarUsuarios"></i> Cancelar</button-->
-                                <a href="srvProducto?accion=listarProductos" type="reset" class="btn btn-danger">
-                                    <i class="fa-close red"></i>Cancelar</a> 
-                                <button type="submit" id="" name="btnRegistrar" value="Registrar" class="btn btn-success"><i class="fa fa-floppy-o"></i> Registrar</button>
-
-                            </div>
-                            <!-- /.box-footer -->
-                        </form>
-                    </div>
-                </section> 
+                <!-- /.content -->
             </div>
             <!-- /.content-wrapper -->
 
@@ -261,15 +278,25 @@
         <script src="bower_components/jquery/dist/jquery.min.js"></script>
         <!-- Bootstrap 3.3.7 -->
         <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+        
         <!-- AdminLTE App -->
         <script src="dist/js/adminlte.min.js"></script>
-
+        <script src="bower_components/datatables.net/js/jquery.dataTables.min.js" type="text/javascript"></script>
+        <script src="bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js" type="text/javascript"></script>
+        <script src="sweetalert/sweetalert.js" type="text/javascript"></script>
+        
+        
+        <script>
+            $(document).ready(function () {
+                $('#tablaProductos').DataTable();
+            });
+        </script>
         <!-- Optionally, you can add Slimscroll and FastClick plugins.
              Both of these plugins are recommended to enhance the
              user experience. -->
     </body>
 </html>
-<%        
+<%
     } else {
         response.sendRedirect("identificar.jsp");
     }

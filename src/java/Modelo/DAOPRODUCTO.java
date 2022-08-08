@@ -106,4 +106,27 @@ public class DAOPRODUCTO extends Conexion {
             throw e;
         }
     }
+    
+    public int inventarioTotal() throws Exception {
+        //Producto prod = null;
+        int invent = 0;
+        ResultSet rs = null;
+        String sql = "{ call mydb.GetInventarioTotal()}";
+                
+        try {
+            this.conectar(false);
+            rs = this.ejecutarOrdenDatos(sql);
+            if (rs.next() == true) {
+                //prod = new Producto();
+                //prod.setInventarioProducto(rs.getInt("ProdInventario"));
+                invent = rs.getInt("ProdInventario");
+            }
+            this.cerrar(true);
+        } catch (Exception e) {
+            this.cerrar(false);
+            throw e;
+        } finally {
+        }
+        return invent;
+    }
 }

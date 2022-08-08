@@ -42,7 +42,9 @@ public class srvProducto extends HttpServlet {
                     case "eliminarProducto":
                         eliminarProducto(request, response);
                         break;
-
+                    case "inventarioTotal":
+                        inventarioTotal(request, response);
+                        break;
                     default:
                         response.sendRedirect("identificar.jsp");
                 }
@@ -245,5 +247,26 @@ public class srvProducto extends HttpServlet {
             request.setAttribute("msje", "No se encontro el producto");
         }
 
+    }
+
+    private void inventarioTotal(HttpServletRequest request, HttpServletResponse response) {
+        DAOPRODUCTO dao = new DAOPRODUCTO();
+        //Producto prod = null;
+        int inventario = 0;
+        try{
+            inventario = dao.inventarioTotal();
+            request.setAttribute("invent", inventario); 
+            
+        }catch(Exception e){
+            request.setAttribute("msje", "No se pudo listar los productos " + e.getMessage());
+        }finally{
+            dao = null;
+        }
+        
+        /*try{
+            this.getServletConfig().getServletContext().getRequestDispatcher("/vistas/productos.jsp").forward(request, response);
+        }catch(Exception ex){
+            request.setAttribute("msje", "No se pudo realizar la petición " + ex.getMessage());
+        }*/
     }
 }

@@ -1,6 +1,6 @@
 <%-- 
     Document   : index
-    Created on : 06/08/2022, 06:15:33 PM
+    Created on : 07/08/2022, 05:15:33 AM
     Author     : Issis Rodriguez, Jennifer Delgado Lozano, Deisy Juliana Matiz Gutierrez
 --%>
 
@@ -126,8 +126,8 @@
                                 </span>
                             </a>
                             <ul class="treeview-menu">
-                                <li><a href="srvPedido?accion=listarPedidos"><i class="fa fa-archive"></i>Pedidos</a></li>
-                                <li class="active"><a href="srvProducto?accion=listarProductos"><i class="fa fa-cube"></i>Productos</a></li>
+                                <li class="active"><a href="srvPedido?accion=listarPedidos"><i class="fa fa-archive"></i>Pedidos</a></li>
+                                <li><a href="srvProducto?accion=listarProductos"><i class="fa fa-cube"></i>Productos</a></li>
                                 <li><a href="srvProveedor?accion=listarProveedores"><i class="fa fa-truck"></i>Proveedores</a></li>
                                 <li><a href="srvEmpleado?accion=listarEmpleados"><i class="fa fa-user-plus"></i>Empleados</a></li>
                                 <li><a href="srvUsuario?accion=listarUsuarios"><i class="fa fa-address-card"></i>Usuarios</a></li>
@@ -171,7 +171,7 @@
                         </div>
                         <div class="col-xs-10 col-md-5 ">
                             <div class="btn-group pull-right">
-                                <a href="srvProducto?accion=listarProductos" class="btn btn-default">
+                                <a href="srvPedido?accion=listarPedidos" class="btn btn-default">
                                     <i class="fa fa-align-justify"></i> Ver listado</a>                                              
                             </div>
                         </div>
@@ -180,58 +180,111 @@
                 <section class="content">
                     <div class="box">
                         <div class="box-header with-border">
-                            <i class="fa fa-edit"></i> <h3 class="box-title">Registrar Nuevo Producto</h3>  
+                            <i class="fa fa-edit"></i> <h3 class="box-title">Actualizar Datos del Pedido</h3>  
                         </div>
-                        <form class="form-horizontal" action="srvProducto?accion=registrarProducto" method="post">
+                        <form class="form-horizontal" action="srvPedido?accion=actualizarPedido" method="post">
+                            <input type="hidden" name="hCodigo" value="${pedido.idPedido}">
+                            
                             <div class="box-body">
                                 <div class="form-group">
-                                    <label class="col-sm-2 control-label">Tipo de Producto</label>
+                                    <label class="col-sm-2 control-label">Tipo de Producto del Pedido</label>
                                     <div class="col-sm-4 input-group">
                                         <span class="input-group-addon"><i class="fa fa-user"></i></span>
-                                        <input id="nombre" type="text" class="form-control" placeholder="Ejem: Cerveza" name="txtTipo" maxlength="50"
-                                               value="">
+                                        <input id="nombre" type="text" required="required" class="form-control" placeholder="Ejem: Cerveza" name="txtTipo" maxlength="50"
+                                               value="${pedido.tipoProdPedido}">
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-2 control-label">Marca del Producto</label>
+                                    <label class="col-sm-2 control-label">Marca del Producto del Pedido</label>
                                     <div class="col-sm-4 input-group">
                                         <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-                                        <input id="nombre" type="text" class="form-control" placeholder="Ejem: Club Colombia" name="txtMarca" maxlength="50"
-                                               value="">
+                                        <input id="nombre" type="text" required="required" class="form-control" placeholder="Ejem: Club Colombia" name="txtMarca" maxlength="50"
+                                               value="${pedido.marcaProdPedido}">
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-2 control-label">Cantidad de Inventario</label>
+                                    <label class="col-sm-2 control-label">Cantidad de Unidades para el Pedido</label>
                                     <div class="col-sm-4 input-group">
                                         <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-                                        <input id="nombre" type="text" class="form-control" placeholder="Ejem: 50" name="txtInventario" maxlength="10"
-                                               value="">
+                                        <input id="nombre" type="text" required="required" class="form-control" placeholder="Ejem: 50" name="txtCantidad" maxlength="10"
+                                               value="${pedido.cantidadPedido}">
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-2 control-label">Costo Unitario</label>
+                                    <label class="col-sm-2 control-label">Costo Total</label>
                                     <div class="col-sm-4 input-group">
                                         <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-                                        <input id="nombre" type="text" class="form-control" placeholder="Ejem: $2500" name="txtCosto" maxlength="10"
-                                               value="">
+                                        <input id="nombre" type="text" required="required" class="form-control" placeholder="Ejem: $25000" name="txtCosto" maxlength="10"
+                                               value="${pedido.costoTotal}">
                                     </div>
                                 </div>
+                                
                                 <div class="form-group">
-                                    <label class="col-sm-2 control-label">Precio de Venta</label>
+                                    <label class="col-sm-2 control-label">Fecha del pedido</label>
                                     <div class="col-sm-4 input-group">
                                         <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-                                        <input id="nombre" type="text" class="form-control" placeholder="Ejem: $5000" name="txtPrecio" maxlength="7"
-                                               value="">
+                                        <input id="nombre" type="date" disabled="disabled" class="form-control" placeholder="Ejem: $25000" name="txtCosto" maxlength="10"
+                                               value="${pedido.fechaPedido}">
+                                    </div>
+                                </div><!-- comment -->
+                                
+                                
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">Proveedor</label>
+                                    <div class="col-sm-4 input-group">
+                                        <span class="input-group-addon"><i class="fa fa-tags"></i></span>
+                                        <select class="form-control"  name="cboProveedor" autofocus=""  required="">
+                                            <option value="0">Seleccione un proveedor</option>
+                                            <c:forEach items="${proveedores}" var="prov">
+                                                <option value="${prov.idProveedor}"  
+                                                        <c:if test="${prov.idProveedor == 
+                                                                      pedido.proveedor.idProveedor}">
+                                                              selected
+                                                        </c:if>
+                                                        >${prov.nombreProveedor}</option>
+                                            </c:forEach>
+                                        </select>
+                                    </div>                                  
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">Empleado</label>
+                                    <div class="col-sm-4 input-group">
+                                        <span class="input-group-addon"><i class="fa fa-tags"></i></span>
+                                        <select class="form-control"  name="cboEmpleado" autofocus=""  required="">
+                                            <option value="0">Seleccione un empleado</option>
+                                            <c:forEach items="${empleados}" var="empl">
+                                                <option value="${empl.idEmpleado}"  
+                                                        <c:if test="${empl.idEmpleado == 
+                                                                      pedido.empleado.idEmpleado}">
+                                                              selected
+                                                        </c:if>
+                                                        >${empl.apellidoEmpleado}</option>
+                                            </c:forEach>
+                                        </select>
+                                    </div>                                  
+                                </div>
+                                
+                                <div class="form-group">
+                                    <div class="col-sm-offset-2 col-sm-10">
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" name="chkEstado" 
+                                                       <c:out value="${pedido.estadoPedido == false ?
+                                                              'unchecked':'checked'}"
+                                                       default=""/>> Activo
+                                            </label>
+                                        </div>
                                     </div>
                                 </div>
                                 
                             </div>
                             <!-- /.box-body -->
                             <div class="box-footer">
-                                <!--button type="reset" class="btn btn-danger"><i class="fa fa-close red" oncancel="srvUsuario?accion=listarUsuarios"></i> Cancelar</button-->
-                                <a href="srvProducto?accion=listarProductos" type="reset" class="btn btn-danger">
+                                <!--button type="reset" class="btn btn-danger"><i class="fa fa-close red"></i> Cancelar</button-->
+                                <a href="srvPedido?accion=listarPedidos" type="reset" class="btn btn-danger">
                                     <i class="fa-close red"></i>Cancelar</a> 
-                                <button type="submit" id="" name="btnRegistrar" value="Registrar" class="btn btn-success"><i class="fa fa-floppy-o"></i> Registrar</button>
+                                <button type="submit" id="" name="btnRegistrar" value="Registrar" class="btn btn-success"><i class="fa fa-refresh"></i> Actualizar Producto</button>
 
                             </div>
                             <!-- /.box-footer -->
