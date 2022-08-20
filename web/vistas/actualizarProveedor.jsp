@@ -13,7 +13,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>Sistema Bodega| Inicio</title>
+        <title>Sistema SAIB| Proveedor</title>
         <!-- Tell the browser to be responsive to screen width -->
         <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
         <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
@@ -41,7 +41,7 @@
                     <!-- mini logo for sidebar mini 50x50 pixels -->
                     <span class="logo-mini"><b>S</b>BL</span>
                     <!-- logo for regular state and mobile devices -->
-                    <span class="logo-lg"><b>Sistema </b>Bodega</span>
+                    <span class="logo-lg"><b>Sistema </b>SAIB</span>
                 </a>
 
                 <!-- Header Navbar -->
@@ -118,7 +118,18 @@
                     <ul class="sidebar-menu" data-widget="tree">
                         <li class="header">INICIO</li>
                         <!-- Optionally, you can add icons to the links -->
-                        <li class="active"><a href="#"><i class="fa fa-link"></i> <span>Panel Administrativo</span></a></li>
+                        <li class="treeview active">
+                            <a href="#"><i class="fa fa-link"></i> <span>Panel Administrativo</span>
+                                <span class="pull-right-container">
+                                    <i class="fa fa-angle-left pull-right"></i>
+                                </span>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li class="active"><a href="srvProveedor?accion=listarProveedores"><i class="fa fa-truck"></i>Proveedores</a></li>
+                                <li><a href="srvEmpleado?accion=listarEmpleados"><i class="fa fa-user-plus"></i>Empleados</a></li>
+                                <li><a href="srvUsuario?accion=listarUsuarios"><i class="fa fa-address-card"></i>Usuarios</a></li>
+                            </ul>
+                        </li>
                         <li class="treeview">
                             <a href="#"><i class="glyphicon glyphicon-th-large"></i> <span>Registros</span>
                                 <span class="pull-right-container">
@@ -128,9 +139,6 @@
                             <ul class="treeview-menu">
                                 <li><a href="srvPedido?accion=listarPedidos"><i class="fa fa-archive"></i>Pedidos</a></li>
                                 <li><a href="srvProducto?accion=listarProductos"><i class="fa fa-cube"></i>Productos</a></li>
-                                <li class="active"><a href="srvProveedor?accion=listarProveedores"><i class="fa fa-truck"></i>Proveedores</a></li>
-                                <li><a href="srvEmpleado?accion=listarEmpleados"><i class="fa fa-user-plus"></i>Empleados</a></li>
-                                <li><a href="srvUsuario?accion=listarUsuarios"><i class="fa fa-address-card"></i>Usuarios</a></li>
                             </ul>
                         </li>
                         <li class="treeview">
@@ -140,8 +148,8 @@
                                 </span>
                             </a>
                             <ul class="treeview-menu">
-                                <li><a href="#"><i class="fa fa-cart-arrow-down"></i>Nueva Venta</a></li>
-                                <li><a href="#"><i class="fa fa-tags"></i>Administrar Ventas</a></li>
+                                <li><a href="srvVenta?accion=nuevoVenta"><i class="fa fa-cart-arrow-down"></i>Nueva Venta</a></li>
+                                <li><a href="srvVenta?accion=listarVentas"><i class="fa fa-tags"></i>Administrar Ventas</a></li>
                             </ul>
                         </li>
                         <li class="treeview">
@@ -151,7 +159,7 @@
                                 </span>
                             </a>
                             <ul class="treeview-menu">
-                                <li><a href="#"><i class="fa fa-bar-chart"></i>Reportes Ventas</a></li>
+                                <li><a href="srvVenta?accion=reporteVenta"><i class="fa fa-bar-chart"></i>Reportes Ventas</a></li>
                             </ul>
                         </li>
                     </ul>
@@ -238,10 +246,10 @@
             <footer class="main-footer">
                 <!-- To the right -->
                 <div class="pull-right hidden-xs">
-                    Issis Rodriguez, Jennifer Delgado, Deisy Matiz 
+                    Tresolution - Issis Rodriguez, Jennifer Delgado, Deisy Matiz 
                 </div>
                 <!-- Default to the left -->
-                <strong>Copyright &copy; 2022 <a href="#">SENA</a>.</strong> Todos los derechos reservados.
+                <strong>Copyright &copy; 2022 <a href="https://www.sena.edu.co/">SENA</a>.</strong> Todos los derechos reservados.
             </footer>
 
             <div class="control-sidebar-bg"></div>

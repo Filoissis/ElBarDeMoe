@@ -23,49 +23,65 @@ and open the template in the editor.
         <link rel="stylesheet" href="plugins/iCheck/square/blue.css">
 
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+
+            img {
+                width: 100%;
+                height: auto;
+            }
+            
+            aside {
+                background-color: #33475b;
+            }
+        </style>
     </head>
-    
+
     <body class="hold-transition login-page">
-        <header>    
-            <nav>
-                
-                <div style="width:21px"></div>
-                <div >
-                    <a href="identificar.jsp" class="login-box" rel="nofollow">Inicia sesión</a>
-                </div>
-            </nav>
-        </header>
         
-               
-        <div class="login-box">
+
+        <aside class="main-sidebar" style="">
+
+            <!-- sidebar: style can be found in sidebar.less -->
+            <section class="sidebar">
+
+                <!-- Sidebar Menu -->
+                <ul class="sidebar-menu" data-widget="tree">
+                    <li class="header" style="color:white">INICIO</li>
+                    <!-- Optionally, you can add icons to the links -->
+                    <li class="active"><a href="identificar.jsp"><i class="fa fa-link"></i> <span>Ingreso a la aplicación</span></a></li>
+                    <li class="active"><a href="#"><i class="fa fa-user-plus"></i> <span>Acerca de</span></a></li>
+                </ul>
+                <!-- /.sidebar-menu -->
+            </section>
+            <!-- /.sidebar -->
+        </aside>
+
+        <div class="content-wrapper">
             <div class="login-logo">
                 <h1 class="font_0" style="text-align:center; font-size:60px;"> <b><strong> El Bar de Moe </strong></b> </h1>
-                
             </div>
-        </div>
 
-        <div class="login-box-body">
-          <div class="main">
-                <h2><b>Bienvenidos</b></h2>
-                <span style="font-size:20px;">Este es el software para el control de inventario de los elementos del Bar de Moe. Por favor inicie sesión para acceder a la aplicación. </span>
-          </div>
-
-            <footer>
-                <div>
-                    <h3>Acerca de</h3>
-                    <p>Este software fue realizado por: 
-                        <br>JENNIFER DELGADO LOZANO
-                        <br>DEISY JULIANA MATIZ GUTIERREZ
-                        <br>ISSIS PAOLA RODRIGUEZ CARO
-                    </p>
+            <div class="login-box-body">
+                <div class="box-body">
+                    <img src="dist/img/Portada2.png" class="img-fluid" role="presentation">
                 </div>
-                
-            </footer>
-          
+            </div>
+
         </div>
+
+        <footer class="main-footer">
+            <!-- To the right -->
+            <div class="pull-right hidden-xs">
+                TriSolution - Issis Rodriguez, Jennifer Delgado, Deisy Matiz 
+            </div>
+            <!-- Default to the left -->
+            <strong>Copyright &copy; 2022 <a href="https://www.sena.edu.co">SENA</a>.</strong> Todos los derechos reservados.
+        </footer>
 
         <div style="background-color:#e5e5e5;text-align:center;padding:10px;margin-top:7px;"></div>
-        
+
         <!-- jQuery 3 -->
         <script src="bower_components/jquery/dist/jquery.min.js"></script>
         <!-- Bootstrap 3.3.7 -->
@@ -74,15 +90,15 @@ and open the template in the editor.
         <script src="plugins/iCheck/icheck.min.js"></script>
 
         <script>
-          $(function () {
-            $('input').iCheck({
-              checkboxClass: 'icheckbox_square-blue',
-              radioClass: 'iradio_square-blue',
-              increaseArea: '20%' /* optional */
+            $(function () {
+                $('input').iCheck({
+                    checkboxClass: 'icheckbox_square-blue',
+                    radioClass: 'iradio_square-blue',
+                    increaseArea: '20%' /* optional */
+                });
             });
-          });
         </script>
-        
+
     </body>
 </html>
 

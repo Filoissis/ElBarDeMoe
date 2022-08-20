@@ -118,20 +118,5 @@ public class DAOPEDIDO extends Conexion {
             this.cerrar(false);
             throw e;
         }
-    }
-    
-    /*public void eliminarProducto(Producto pro) throws Exception{
-        String sql = "{ call mydb.DeleteProductoById("+ pro.getIdProducto()+ ")}";
-        
-        try{
-           this.conectar(false);
-           this.ejecutarOrden(sql);
-           this.cerrar(true);
-        }catch(Exception e){
-            this.cerrar(false);
-            throw e;
-        }
-    }*/
-    
-    
+    }   
 }

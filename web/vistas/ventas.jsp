@@ -1,6 +1,6 @@
 <%-- 
     Document   : index
-    Created on : 06/08/2022, 06:15:33 PM
+    Created on : 13/08/2022, 06:15:33 PM
     Author     : Issis Rodriguez, Jennifer Delgado Lozano, Deisy Juliana Matiz Gutierrez
 --%>
 
@@ -13,7 +13,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>Sistema SAIB| Producto</title>
+        <title>Sistema SAIB| Ventas</title>
         <!-- Tell the browser to be responsive to screen width -->
         <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
         <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
@@ -23,7 +23,8 @@
         <link rel="stylesheet" href="bower_components/Ionicons/css/ionicons.min.css">
         <!-- Theme style -->
         <link href="dist/css/AdminLTE.min.css" rel="stylesheet" type="text/css"/>
-
+        <link href="bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet" type="text/css"/>
+        <link href="sweetalert/sweetalert.css" rel="stylesheet" type="text/css"/>
         <!-- AdminLTE Skins. We have chosen the skin-blue for this starter
               page. However, you can choose any other skin. Make sure you
               apply the skin class to the body tag so the changes take effect. -->
@@ -41,7 +42,7 @@
                     <!-- mini logo for sidebar mini 50x50 pixels -->
                     <span class="logo-mini"><b>S</b>BL</span>
                     <!-- logo for regular state and mobile devices -->
-                    <span class="logo-lg"><b>Sistema </b>Bodega</span>
+                    <span class="logo-lg"><b>Sistema </b>SAIB</span>
                 </a>
 
                 <!-- Header Navbar -->
@@ -130,7 +131,7 @@
                                 <li><a href="srvUsuario?accion=listarUsuarios"><i class="fa fa-address-card"></i>Usuarios</a></li>
                             </ul>
                         </li>
-                        <li class="treeview active">
+                        <li class="treeview">
                             <a href="#"><i class="glyphicon glyphicon-th-large"></i> <span>Registros</span>
                                 <span class="pull-right-container">
                                     <i class="fa fa-angle-left pull-right"></i>
@@ -138,10 +139,10 @@
                             </a>
                             <ul class="treeview-menu">
                                 <li><a href="srvPedido?accion=listarPedidos"><i class="fa fa-archive"></i>Pedidos</a></li>
-                                <li class="active"><a href="srvProducto?accion=listarProductos"><i class="fa fa-cube"></i>Productos</a></li>
+                                <li><a href="srvProducto?accion=listarProductos"><i class="fa fa-cube"></i>Productos</a></li>
                             </ul>
                         </li>
-                        <li class="treeview">
+                        <li class="treeview active">
                             <a href="#"><i class="fa fa-cart-arrow-down"></i> <span>Ventas</span>
                                 <span class="pull-right-container">
                                     <i class="fa fa-angle-left pull-right"></i>
@@ -149,7 +150,7 @@
                             </a>
                             <ul class="treeview-menu">
                                 <li><a href="srvVenta?accion=nuevoVenta"><i class="fa fa-cart-arrow-down"></i>Nueva Venta</a></li>
-                                <li><a href="srvVenta?accion=listarVentas"><i class="fa fa-tags"></i>Administrar Ventas</a></li>
+                                <li class="active"><a href="srvVenta?accion=listarVentas"><i class="fa fa-tags"></i>Administrar Ventas</a></li>
                             </ul>
                         </li>
                         <li class="treeview">
@@ -169,83 +170,77 @@
             </aside>
 
             <!-- Content Wrapper. Contains page content -->
+            <!-- Content Wrapper. Contains page content -->
             <div class="content-wrapper">
                 <section class="content-header">
-                    <div class="row">
-                        <div class="col-xs-12 col-md-3">
+                    <h1>Gestión de Ventas</h1>
+                </section>
+                <!-- Content Header (Page header) -->
+                <section class="content-header">
+                    <a href="srvVenta?accion=nuevoVenta" class="btn btn-success">
+                        <i class="fa fa-plus"></i> Nueva Venta </a>
+
+                    <ol class="breadcrumb">
+                        <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
+                        <li class="active">Ventas</li>
+                    </ol>
+                </section>
+
+                <section class="content">
+                    <div class="box">    
+                        <div class="box-header with-border">             
+                            <h3 class="box-title">Listado de Ventas Realizadas</h3>
                         </div>
-                        <div class="col-md-3 hidden-xs"></div>
-                        <div class="col-xs-2 col-md-1">
-                        </div>
-                        <div class="col-xs-10 col-md-5 ">
-                            <div class="btn-group pull-right">
-                                <a href="srvProducto?accion=listarProductos" class="btn btn-default">
-                                    <i class="fa fa-align-justify"></i> Ver listado</a>                                              
+                        <div class="box-body">
+                            <div class="table-responsive" >                                 
+                                <table class="table table-bordered table-striped dataTable table-hover" id="tablaVentas" class="display">
+                                    <thead>
+                                        <tr>
+                                            <th>IdVenta</th>
+                                            <th>Tipo</th>
+                                            <th>Marca</th>
+                                            <th>Cantidad</th>
+                                            <th>Precio Total</th>
+                                            <th>Fecha</th>
+                                            <th>Empleado</th> 
+                                        </tr>
+                                    </thead>
+                                    <c:forEach var="vent" items="${ventas}" varStatus="iteracion">                                                    
+                                        <tr>
+                                            <td>${iteracion.index + 1}</td>
+                                            <td>${vent.producto.tipoProducto}</td>
+                                            <td>${vent.producto.marcaProducto}</td>
+                                            <td>${vent.cantidadVendida}</td>
+                                            <td>${vent.precioVenta}</td>
+                                            <td>${vent.fechaVenta}</td>
+                                            <td>${vent.empleado.apellidoEmpleado}</td>
+                                            
+                                            <td><a href="<c:url value="srvVenta">
+                                                       <c:param name="accion" value="leerVenta" />
+                                                       <c:param name="cod" value="${vent.idVenta}" />
+                                                   </c:url>"><button type="button" class="btn btn-warning" data-toggle="tooltip"  title="Editar" data-original-title="Editar">
+                                                        <i class="fa fa-pencil"></i></button></a>
+                                                <!-- DESACTIVAR / ACTIVAR USUARIOS -->
+                                               
+
+                                                
+                                                <!-- ELIMINAR USUARIOS -->
+                                                
+
+                                            </td>
+                                        </tr>                                                    
+                                    </c:forEach>                                               
+                                </table>
                             </div>
                         </div>
+                        <!-- /.box-body -->
+                        <div class="box-footer">
+                            <!--Pie de página-->
+                        </div>
+                        <!-- /.box-footer-->
                     </div>
                 </section>
-                <section class="content">
-                    <div class="box">
-                        <div class="box-header with-border">
-                            <i class="fa fa-edit"></i> <h3 class="box-title">Registrar Nuevo Producto</h3>  
-                        </div>
-                        <form class="form-horizontal" action="srvProducto?accion=registrarProducto" method="post">
-                            <div class="box-body">
-                                <div class="form-group">
-                                    <label class="col-sm-2 control-label">Tipo de Producto</label>
-                                    <div class="col-sm-4 input-group">
-                                        <span class="input-group-addon"><i class="fa fa-user"></i></span>
-                                        <input id="nombre" type="text" class="form-control" placeholder="Ejem: Cerveza" name="txtTipo" maxlength="50"
-                                               value="">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-2 control-label">Marca del Producto</label>
-                                    <div class="col-sm-4 input-group">
-                                        <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-                                        <input id="nombre" type="text" class="form-control" placeholder="Ejem: Club Colombia" name="txtMarca" maxlength="50"
-                                               value="">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-2 control-label">Cantidad de Inventario</label>
-                                    <div class="col-sm-4 input-group">
-                                        <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-                                        <input id="nombre" type="text" class="form-control" placeholder="Ejem: 50" name="txtInventario" maxlength="10"
-                                               value="">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-2 control-label">Costo Unitario</label>
-                                    <div class="col-sm-4 input-group">
-                                        <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-                                        <input id="nombre" type="text" class="form-control" placeholder="Ejem: $2500" name="txtCosto" maxlength="10"
-                                               value="">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-2 control-label">Precio de Venta</label>
-                                    <div class="col-sm-4 input-group">
-                                        <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-                                        <input id="nombre" type="text" class="form-control" placeholder="Ejem: $5000" name="txtPrecio" maxlength="7"
-                                               value="">
-                                    </div>
-                                </div>
-                                
-                            </div>
-                            <!-- /.box-body -->
-                            <div class="box-footer">
-                                <!--button type="reset" class="btn btn-danger"><i class="fa fa-close red" oncancel="srvUsuario?accion=listarUsuarios"></i> Cancelar</button-->
-                                <a href="srvProducto?accion=listarProductos" type="reset" class="btn btn-danger">
-                                    <i class="fa-close red"></i>Cancelar</a> 
-                                <button type="submit" id="" name="btnRegistrar" value="Registrar" class="btn btn-success"><i class="fa fa-floppy-o"></i> Registrar</button>
-
-                            </div>
-                            <!-- /.box-footer -->
-                        </form>
-                    </div>
-                </section> 
+                <!-- /.content -->
             </div>
             <!-- /.content-wrapper -->
 
@@ -256,7 +251,7 @@
                     Tresolution - Issis Rodriguez, Jennifer Delgado, Deisy Matiz 
                 </div>
                 <!-- Default to the left -->
-                <strong>Copyright &copy; 2022 <a href="https://www.sena.edu.co">SENA</a>.</strong> Todos los derechos reservados.
+                <strong>Copyright &copy; 2022 <a href="https://www.sena.edu.co/">SENA</a>.</strong> Todos los derechos reservados.
             </footer>
 
             <div class="control-sidebar-bg"></div>
@@ -269,15 +264,25 @@
         <script src="bower_components/jquery/dist/jquery.min.js"></script>
         <!-- Bootstrap 3.3.7 -->
         <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+        
         <!-- AdminLTE App -->
         <script src="dist/js/adminlte.min.js"></script>
-
+        <script src="bower_components/datatables.net/js/jquery.dataTables.min.js" type="text/javascript"></script>
+        <script src="bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js" type="text/javascript"></script>
+        <script src="sweetalert/sweetalert.js" type="text/javascript"></script>
+        
+        
+        <script>
+            $(document).ready(function () {
+                $('#tablaVentas').DataTable();
+            });
+        </script>
         <!-- Optionally, you can add Slimscroll and FastClick plugins.
              Both of these plugins are recommended to enhance the
              user experience. -->
     </body>
 </html>
-<%        
+<%
     } else {
         response.sendRedirect("identificar.jsp");
     }

@@ -2,16 +2,18 @@
 package Controlador;
 
 import Modelo.DAOEMPLEADO;
-import Modelo.DAOPEDIDO;
 import Modelo.DAOPRODUCTO;
-import Modelo.DAOPROVEEDOR;
+import Modelo.DAOVENTA;
 import Modelo.Empleado;
-import Modelo.Pedido;
 import Modelo.Producto;
-import Modelo.Proveedor;
+import Modelo.Venta;
 import java.io.IOException;
+import java.text.DateFormat;
 import java.util.List;
 import java.util.Set;
+import java.util.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -19,9 +21,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-@WebServlet(name = "srvPedido", urlPatterns = {"/srvPedido"})
+@WebServlet(name = "srvVenta", urlPatterns = {"/srvVenta"})
 
-public class srvPedido extends HttpServlet {
+public class srvVenta extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String accion = request.getParameter("accion");
@@ -29,35 +31,32 @@ public class srvPedido extends HttpServlet {
         try{
             if(accion != null){
                 switch(accion){
-                    case "listarPedidos":
-                        listarPedidos(request, response);
+                    case "listarVentas":
+                        listarVentas(request, response);
                         break;
-                    case "nuevoPedido":
+                    case "nuevoVenta":
                         presentarFormulario(request, response);
                         break;
-                    case "registrarPedido":
-                        registrarPedido(request, response);
+                    case "registrarVenta":
+                        registrarVenta(request, response);
                         break;
-                    case "leerPedido":
-                        presentarPedido(request, response);
+                    case "leerVenta":
+                        presentarVenta(request, response);
                         break;
-                    case "actualizarPedido":
-                        actualizarPedido(request, response);
+                    case "actualizarVenta":
+                        actualizarVenta(request, response);
                         break;
-                    /*case "eliminarProducto":
-                        eliminarProducto(request, response);
+                    case "reporteVenta":
+                        reporteVenta(request, response);
                         break;
-                    case "inventarioTotal":
-                        inventarioTotal(request, response);
-                        break;*/
+                    case "filtroReporte":
+                        filtroReporte(request, response);
+                        break;
+                        
                     default:
                         response.sendRedirect("identificar.jsp");
                 }
-            }else if (request.getParameter("cambiar")!= null){
-                cambiarEstado(request, response);
-            } else
-            
-            {
+            }else {
                 response.sendRedirect("identificar.jsp");
             }
         }catch(Exception e){
@@ -109,22 +108,22 @@ public class srvPedido extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
-    private void listarPedidos(HttpServletRequest request, HttpServletResponse response) {
+    private void listarVentas(HttpServletRequest request, HttpServletResponse response) {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        DAOPEDIDO dao = new DAOPEDIDO();
-        List<Pedido> ped = null;
+        DAOVENTA dao = new DAOVENTA();
+        List<Venta> vent = null;
         try{
-            ped = dao.listarPedidos();
-            request.setAttribute("pedidos", ped); 
+            vent = dao.listarVentas();
+            request.setAttribute("ventas", vent); 
             
         }catch(Exception e){
-            request.setAttribute("msje", "No se pudo listar los pedidos " + e.getMessage());
+            request.setAttribute("msje", "No se pudo listar las ventas " + e.getMessage());
         }finally{
             dao = null;
         }
         
         try{
-            this.getServletConfig().getServletContext().getRequestDispatcher("/vistas/pedidos.jsp").forward(request, response);
+            this.getServletConfig().getServletContext().getRequestDispatcher("/vistas/ventas.jsp").forward(request, response);
         }catch(Exception ex){
             request.setAttribute("msje", "No se pudo realizar la petición " + ex.getMessage());
         }
@@ -133,73 +132,75 @@ public class srvPedido extends HttpServlet {
 
     private void presentarFormulario(HttpServletRequest request, HttpServletResponse response) {
         try{
-            this.cargarProveedores(request);
+            this.cargarProductos(request);
             this.cargarEmpleados(request);
-            this.getServletConfig().getServletContext().getRequestDispatcher("/vistas/nuevoPedido.jsp").forward(request, response);
+            this.getServletConfig().getServletContext().getRequestDispatcher("/vistas/nuevaVenta.jsp").forward(request, response);
         }catch(Exception e){
             request.setAttribute("msje", "No se pudo cargar la vista " + e.getMessage());
         }
     }
     
-    private void registrarPedido(HttpServletRequest request, HttpServletResponse response) {
-        DAOPEDIDO daoP;
-        Pedido ped = null;
-        Proveedor prov;
+    private void registrarVenta(HttpServletRequest request, HttpServletResponse response) {
+        DAOVENTA daoV;
+        DAOPRODUCTO daoPrd;
+        Venta sale = null;
+        Producto prod;
         Empleado emp;
         
-        if (request.getParameter("txtTipo") != null
-                && request.getParameter("txtMarca") != null
+        if (request.getParameter("cboProducto") != null
                 && request.getParameter("txtCantidad") != null
-                && request.getParameter("txtCosto") != null
-                && request.getParameter("cboProveedor") != null
-                && request.getParameter("cboEmpleado") != null) {
+                && /*request.getParameter("txtCosto") != null
+                &&*/ request.getParameter("cboEmpleado") != null) {
 
-            ped = new Pedido();
-            ped.setTipoProdPedido(request.getParameter("txtTipo"));
-            ped.setMarcaProdPedido(request.getParameter("txtMarca"));
-            ped.setCantidadPedido(Integer.parseInt(request.getParameter("txtCantidad")));
-            ped.setCostoTotal(Integer.parseInt(request.getParameter("txtCosto")));
+            sale = new Venta();
+            daoPrd = new DAOPRODUCTO();
             
-            if (request.getParameter("chkEstado") != null) {
-                ped.setEstadoPedido(true);
-            } else {
-                ped.setEstadoPedido(false);
+            prod = new Producto();
+            prod.setIdProducto(Integer.parseInt(request.getParameter("cboProducto")));
+            
+            try{
+                prod = daoPrd.leerProducto(prod);
+            } catch (Exception ex){
+                
             }
+            sale.setProducto(prod);
             
-            prov = new Proveedor();
-            prov.setIdProveedor(Integer.parseInt(request.getParameter("cboProveedor")));
-            ped.setProveedor(prov);
+            sale.setCantidadVendida(Integer.parseInt(request.getParameter("txtCantidad")));
+            
+            sale.setPrecioVenta(prod.getPrecioVenta() * sale.getCantidadVendida());
             
             emp = new Empleado();
             emp.setIdEmpleado(Integer.parseInt(request.getParameter("cboEmpleado")));
-            ped.setEmpleado(emp);
+            sale.setEmpleado(emp);
             
-            daoP = new DAOPEDIDO();
+            daoV = new DAOVENTA();
+            
             try {
-                daoP.registrarPedido(ped);
-                response.sendRedirect("srvPedido?accion=listarPedidos");
+                daoV.registrarVenta(sale);
+                daoPrd.actualizarInventario(sale);
+                response.sendRedirect("srvVenta?accion=listarVentas");
             } catch (Exception e) {
                 request.setAttribute("msje",
-                        "No se pudo registrar el pedido " + e.getMessage());
-                request.setAttribute("pedido", ped);
+                        "No se pudo registrar la venta " + e.getMessage());
+                request.setAttribute("venta", sale);
                 this.presentarFormulario(request, response);
             }
         }
         
     }
 
-    private void presentarPedido(HttpServletRequest request, HttpServletResponse response) {
-        DAOPEDIDO dao;
-        Pedido pedi;
+    private void presentarVenta(HttpServletRequest request, HttpServletResponse response) {
+        DAOVENTA dao;
+        Venta sale;
         if (request.getParameter("cod") != null) {
-            pedi = new Pedido();
-            pedi.setIdPedido(Integer.parseInt(request.getParameter("cod")));
+            sale = new Venta();
+            sale.setIdVenta(Integer.parseInt(request.getParameter("cod")));
                     
-            dao = new DAOPEDIDO();
+            dao = new DAOVENTA();
             try {
-                pedi = dao.leerPedido(pedi);
-                if (pedi != null) {
-                    request.setAttribute("pedido", pedi);
+                sale = dao.leerVenta(sale);
+                if (sale != null) {
+                    request.setAttribute("venta", sale);
                 } else {
                     request.setAttribute("msje", "No se encontró el pedido");
                 }
@@ -210,62 +211,53 @@ public class srvPedido extends HttpServlet {
             request.setAttribute("msje", "No se tiene el parámetro necesario");
         }
         try {
-            this.cargarProveedores(request);
+            this.cargarProductos(request);
             this.cargarEmpleados(request);
             this.getServletConfig().getServletContext().
-                    getRequestDispatcher("/vistas/actualizarPedido.jsp"
+                    getRequestDispatcher("/vistas/actualizarVenta.jsp"
                     ).forward(request, response);
         } catch (Exception e) {
             request.setAttribute("msje", "No se pudo realizar la operacion" + e.getMessage());
         }
     }
 
-    private void actualizarPedido(HttpServletRequest request, HttpServletResponse response) {
-        DAOPEDIDO daoPd;
-        Pedido pedid = null;
-        Proveedor provd;
+    private void actualizarVenta(HttpServletRequest request, HttpServletResponse response) {
+        DAOVENTA daoVt;
+        Venta vent = null;
+        Producto prod;
         Empleado empl;
                 
         if (request.getParameter("hCodigo") != null
-                && request.getParameter("txtTipo") != null
-                && request.getParameter("txtMarca") != null
+                && request.getParameter("cboProducto") != null
                 && request.getParameter("txtCantidad") != null
                 && request.getParameter("txtCosto") != null) {
             
-            pedid = new Pedido();
-            pedid.setIdPedido(Integer.parseInt(request.getParameter("hCodigo")));
-            pedid.setTipoProdPedido(request.getParameter("txtTipo"));
-            pedid.setMarcaProdPedido(request.getParameter("txtMarca"));
-            pedid.setCantidadPedido(Integer.parseInt(request.getParameter("txtCantidad")));
-            pedid.setCostoTotal(Integer.parseInt(request.getParameter("txtCosto")));
+            vent = new Venta();
+            vent.setIdVenta(Integer.parseInt(request.getParameter("hCodigo")));
+            vent.setCantidadVendida(Integer.parseInt(request.getParameter("txtCantidad")));
+            vent.setPrecioVenta(Integer.parseInt(request.getParameter("txtCosto")));
             
-            if (request.getParameter("chkEstado") != null) {
-                pedid.setEstadoPedido(true);
-            } else {
-                pedid.setEstadoPedido(false);
-            }
-            
-            provd = new Proveedor();
-            provd.setIdProveedor(Integer.parseInt(request.getParameter("cboProveedor")));
-            pedid.setProveedor(provd);
+            prod = new Producto();
+            prod.setIdProducto(Integer.parseInt(request.getParameter("cboProducto")));
+            vent.setProducto(prod);
             
             empl = new Empleado();
             empl.setIdEmpleado(Integer.parseInt(request.getParameter("cboEmpleado")));
-            pedid.setEmpleado(empl);
+            vent.setEmpleado(empl);
                         
-            daoPd = new DAOPEDIDO();
+            daoVt = new DAOVENTA();
             try {
-                daoPd.actualizarPedido(pedid);
-                response.sendRedirect("srvPedido?accion=listarPedidos");
+                daoVt.actualizarVenta(vent);
+                response.sendRedirect("srvVenta?accion=listarVentas");
             } catch (Exception e) {
                 request.setAttribute("msje",
                         "No se pudo actualizar el Pedido " + e.getMessage());
-                request.setAttribute("producto", pedid);
+                request.setAttribute("venta", vent);
                 
             }
             try {
                 this.getServletConfig().getServletContext().
-                        getRequestDispatcher("/vistas/actualizarPedido.jsp"
+                        getRequestDispatcher("/vistas/actualizarVenta.jsp"
                         ).forward(request, response);
             } catch (Exception ex) {
                 request.setAttribute("msje", "No se pudo realizar la operacion " + ex.getMessage());
@@ -273,17 +265,17 @@ public class srvPedido extends HttpServlet {
         }
     }
     
-    private void cargarProveedores(HttpServletRequest request) {
-        DAOPROVEEDOR dao = new DAOPROVEEDOR();
-        List<Proveedor> prov = null;
+    private void cargarProductos(HttpServletRequest request) {
+        DAOPRODUCTO dao = new DAOPRODUCTO();
+        List<Producto> prod = null;
         try{
-            prov = dao.listarProveedores();
-            request.setAttribute("proveedores", prov);
+            prod = dao.listarProductos();
+            request.setAttribute("productos", prod);
             
         }catch(Exception e){
             request.setAttribute("msje", "No se pudo cargar los Proveedores " + e.getMessage());
         }finally{
-            prov = null;
+            prod = null;
             dao = null;
         }
     }
@@ -339,7 +331,7 @@ public class srvPedido extends HttpServlet {
         }catch(Exception ex){
             request.setAttribute("msje", "No se pudo realizar la petición " + ex.getMessage());
         }
-    }*/
+    }
 
     private void cambiarEstado(HttpServletRequest request, HttpServletResponse response) {
         DAOPEDIDO daoPd;
@@ -371,5 +363,100 @@ public class srvPedido extends HttpServlet {
         }
         
         this.listarPedidos(request, response);
+    }*/
+
+    private void reporteVenta(HttpServletRequest request, HttpServletResponse response) {
+        DAOVENTA dao = new DAOVENTA();
+        List<Venta> vent = null;
+       
+        try {
+            vent = dao.listarVentas();
+            request.setAttribute("ventas", vent);
+
+        } catch (Exception e) {
+            request.setAttribute("msje", "No se pudo listar las ventas " + e.getMessage());
+        } finally {
+            dao = null;
+        }
+
+        try {
+            this.cargarProductos(request);
+            this.cargarEmpleados(request);
+            this.getServletConfig().getServletContext().getRequestDispatcher("/vistas/reportes.jsp").forward(request, response);
+        } catch (Exception ex) {
+            request.setAttribute("msje", "No se pudo realizar la petición " + ex.getMessage());
+        }
+
+    }
+
+    private void filtroReporte(HttpServletRequest request, HttpServletResponse response) {
+        DAOVENTA dao = new DAOVENTA();
+        List<Venta> vent = null;
+        Venta ven = null;
+        Producto prod;
+        Empleado empl;
+        String inicio;
+        String fin;
+              
+        try {
+            ven = new Venta();
+        
+            if (Integer.parseInt(request.getParameter("cboProducto")) != 0){
+                prod = new Producto();
+                empl = new Empleado();
+                prod.setIdProducto(Integer.parseInt(request.getParameter("cboProducto")));
+                empl.setIdEmpleado(0);
+                ven.setProducto(prod);
+                ven.setEmpleado(empl);
+                vent = dao.listarVentas(ven);
+
+            } else if (Integer.parseInt(request.getParameter("cboEmpleado")) != 0) {
+                prod = new Producto();
+                empl = new Empleado();
+                empl.setIdEmpleado(Integer.parseInt(request.getParameter("cboEmpleado")));
+                prod.setIdProducto(0);
+                ven.setEmpleado(empl);
+                ven.setProducto(prod);
+                vent = dao.listarVentas(ven);
+                
+            } else if (request.getParameter("fechaInicio") != null && 
+                    request.getParameter("fechaFinal") != null) {
+                
+                inicio = request.getParameter("fechaInicio");
+                SimpleDateFormat fechaIni = new SimpleDateFormat("yyyy-MM-dd");
+                Date iniDate = fechaIni.parse(inicio);
+                
+                fin = request.getParameter("fechaFinal");
+                SimpleDateFormat fechaFin = new SimpleDateFormat("yyyy-MM-dd");
+                Date finDate = fechaFin.parse(fin);
+                        
+                if(iniDate.before(finDate)) {
+                    vent = dao.listarVentas(inicio, fin);
+                }else{
+                    vent = dao.listarVentas();
+                }
+                
+            } else {
+                vent = dao.listarVentas();
+            }
+        
+            //vent = dao.listarVentas(ven);
+            request.setAttribute("ventas", vent);
+
+        } catch (Exception e) {
+            request.setAttribute("msje", "No se pudo listar las ventas " + e.getMessage());
+        } finally {
+            dao = null;
+        }
+
+        try {
+            this.cargarProductos(request);
+            this.cargarEmpleados(request);
+            this.getServletConfig().getServletContext().getRequestDispatcher("/vistas/reportes.jsp").forward(request, response);
+        } catch (Exception ex) {
+            request.setAttribute("msje", "No se pudo realizar la petición " + ex.getMessage());
+        }
+        
+        
     }
 }

@@ -138,14 +138,13 @@ public class srvProveedor extends HttpServlet {
         DAOPROVEEDOR daoProv;
         Proveedor pro = null;
         
-        if (request.getParameter("hCodigo") != null
-                && request.getParameter("txtNombre") != null
+        if (request.getParameter("txtNombre") != null
                 && request.getParameter("txtDireccion") != null
                 && request.getParameter("txtTelefono") != null
                 && request.getParameter("txtNIT") != null) {
 
             pro = new Proveedor();
-            pro.setIdProveedor(Integer.parseInt(request.getParameter("hCodigo")));
+            //pro.setIdProveedor(Integer.parseInt(request.getParameter("hCodigo")));
             pro.setNombreProveedor(request.getParameter("txtNombre"));
             pro.setDireccionProveedor(request.getParameter("txtDireccion"));
             pro.setTelefonoProveedor(Integer.parseInt(request.getParameter("txtTelefono")));

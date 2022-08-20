@@ -58,14 +58,14 @@
                                 <!-- Menu Toggle Button -->
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                     <!-- The user image in the navbar-->
-                                    <img src="dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
+                                    <!--img src="dist/img/user2-160x160.jpg" class="user-image" alt="User Image"-->
                                     <!-- hidden-xs hides the username on small devices so only the image appears. -->
                                     <span class="hidden-xs">${vendedor.nombreUsuario}</span>
                                 </a>
                                 <ul class="dropdown-menu">
                                     <!-- The user image in the menu -->
                                     <li class="user-header">
-                                        <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+                                        <img src="dist/img/ElBarDeMoe160x160.jpg" class="img-circle" alt="User Image">
 
                                         <p>                    
                                             Bienvenido - ${vendedor.nombreUsuario}
@@ -93,7 +93,7 @@
                     <!-- Sidebar user panel (optional) -->
                     <div class="user-panel">
                         <div class="pull-left image">
-                            <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+                            <img src="dist/img/ElBarDeMoe160x160.jpg" class="img-circle" alt="User Image">
                         </div>
                         <div class="pull-left info">
                             <p>Bienvenido, ${vendedor.nombreUsuario}</p>
@@ -119,6 +119,16 @@
                         <li class="header">INICIO</li>
                         <!-- Optionally, you can add icons to the links -->
                         <li class="active"><a href="#"><i class="fa fa-link"></i> <span>Panel Administrativo</span></a></li>
+                        <li class="treeview active">
+                            <a href="#"><i class="glyphicon glyphicon-th-large"></i> <span>Pedidos</span>
+                                <span class="pull-right-container">
+                                    <i class="fa fa-angle-left pull-right"></i>
+                                </span>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li><a href="srvPedido?accion=listarPedidos"><i class="fa fa-archive"></i>Pedidos</a></li>
+                            </ul>
+                        </li>
                         <li class="treeview">
                             <a href="#"><i class="fa fa-cart-arrow-down"></i> <span>Ventas</span>
                                 <span class="pull-right-container">
@@ -126,8 +136,8 @@
                                 </span>
                             </a>
                             <ul class="treeview-menu">
-                                <li><a href="#"><i class="fa fa-cart-arrow-down"></i>Nueva Venta</a></li>
-                                <li><a href="#"><i class="fa fa-tags"></i>Administrar Ventas</a></li>
+                                <li><a href="srvVenta?accion=nuevoVenta"><i class="fa fa-cart-arrow-down"></i>Nueva Venta</a></li>
+                                <!--li><a href="#"><i class="fa fa-tags"></i>Administrar Ventas</a></li-->
                             </ul>
                         </li>
                     </ul>
@@ -223,10 +233,10 @@
             <footer class="main-footer">
                 <!-- To the right -->
                 <div class="pull-right hidden-xs">
-                    Anything you want
+                    TriSolution - Issis Rodriguez, Jennifer Delgado, Deisy Matiz
                 </div>
                 <!-- Default to the left -->
-                <strong>Copyright &copy; 2022 <a href="#">SENA</a>.</strong> Todos los derechos reservados.
+                <strong>Copyright &copy; 2022 <a href="https://www.sena.edu.co/">SENA</a>.</strong> Todos los derechos reservados.
             </footer>
 
             <div class="control-sidebar-bg"></div>

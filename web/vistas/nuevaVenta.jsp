@@ -1,6 +1,6 @@
 <%-- 
     Document   : index
-    Created on : 06/08/2022, 06:15:33 PM
+    Created on : 14/08/2022, 09:15:33 PM
     Author     : Issis Rodriguez, Jennifer Delgado Lozano, Deisy Juliana Matiz Gutierrez
 --%>
 
@@ -13,7 +13,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>Sistema SAIB| Producto</title>
+        <title>Sistema SAIB| Inicio</title>
         <!-- Tell the browser to be responsive to screen width -->
         <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
         <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
@@ -41,7 +41,7 @@
                     <!-- mini logo for sidebar mini 50x50 pixels -->
                     <span class="logo-mini"><b>S</b>BL</span>
                     <!-- logo for regular state and mobile devices -->
-                    <span class="logo-lg"><b>Sistema </b>Bodega</span>
+                    <span class="logo-lg"><b>Sistema </b>SAIB</span>
                 </a>
 
                 <!-- Header Navbar -->
@@ -130,7 +130,7 @@
                                 <li><a href="srvUsuario?accion=listarUsuarios"><i class="fa fa-address-card"></i>Usuarios</a></li>
                             </ul>
                         </li>
-                        <li class="treeview active">
+                        <li class="treeview">
                             <a href="#"><i class="glyphicon glyphicon-th-large"></i> <span>Registros</span>
                                 <span class="pull-right-container">
                                     <i class="fa fa-angle-left pull-right"></i>
@@ -138,17 +138,17 @@
                             </a>
                             <ul class="treeview-menu">
                                 <li><a href="srvPedido?accion=listarPedidos"><i class="fa fa-archive"></i>Pedidos</a></li>
-                                <li class="active"><a href="srvProducto?accion=listarProductos"><i class="fa fa-cube"></i>Productos</a></li>
+                                <li><a href="srvProducto?accion=listarProductos"><i class="fa fa-cube"></i>Productos</a></li>
                             </ul>
                         </li>
-                        <li class="treeview">
+                        <li class="treeview active">
                             <a href="#"><i class="fa fa-cart-arrow-down"></i> <span>Ventas</span>
                                 <span class="pull-right-container">
                                     <i class="fa fa-angle-left pull-right"></i>
                                 </span>
                             </a>
                             <ul class="treeview-menu">
-                                <li><a href="srvVenta?accion=nuevoVenta"><i class="fa fa-cart-arrow-down"></i>Nueva Venta</a></li>
+                                <li  class="active"><a href="srvVenta?accion=nuevoVenta"><i class="fa fa-cart-arrow-down"></i>Nueva Venta</a></li>
                                 <li><a href="srvVenta?accion=listarVentas"><i class="fa fa-tags"></i>Administrar Ventas</a></li>
                             </ul>
                         </li>
@@ -179,7 +179,7 @@
                         </div>
                         <div class="col-xs-10 col-md-5 ">
                             <div class="btn-group pull-right">
-                                <a href="srvProducto?accion=listarProductos" class="btn btn-default">
+                                <a href="srvVenta?accion=listarVentas" class="btn btn-default">
                                     <i class="fa fa-align-justify"></i> Ver listado</a>                                              
                             </div>
                         </div>
@@ -188,61 +188,57 @@
                 <section class="content">
                     <div class="box">
                         <div class="box-header with-border">
-                            <i class="fa fa-edit"></i> <h3 class="box-title">Registrar Nuevo Producto</h3>  
+                            <i class="fa fa-edit"></i> <h3 class="box-title">Registrar Nueva Venta</h3>  
                         </div>
-                        <form class="form-horizontal" action="srvProducto?accion=registrarProducto" method="post">
+                        <form class="form-horizontal" action="srvVenta?accion=registrarVenta" method="post" name="form1">
                             <div class="box-body">
                                 <div class="form-group">
-                                    <label class="col-sm-2 control-label">Tipo de Producto</label>
+                                    <label class="col-sm-2 control-label">Producto</label>
                                     <div class="col-sm-4 input-group">
-                                        <span class="input-group-addon"><i class="fa fa-user"></i></span>
-                                        <input id="nombre" type="text" class="form-control" placeholder="Ejem: Cerveza" name="txtTipo" maxlength="50"
-                                               value="">
-                                    </div>
+                                        <span class="input-group-addon"><i class="fa fa-tags"></i></span>
+                                        <select class="form-control"  name="cboProducto" autofocus=""  required="true">
+                                            <option value="0">Seleccione un producto</option>
+                                            <c:forEach items="${productos}" var="prod">
+                                                <option value="${prod.idProducto}" 
+                                                        
+                                                        >${prod.tipoProducto} - ${prod.marcaProducto}</option>
+                                            </c:forEach>
+                                        </select>
+                                    </div>                                  
                                 </div>
+                                                              
                                 <div class="form-group">
-                                    <label class="col-sm-2 control-label">Marca del Producto</label>
+                                    <label class="col-sm-2 control-label">Cantidad de Unidades a vender</label>
                                     <div class="col-sm-4 input-group">
-                                        <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-                                        <input id="nombre" type="text" class="form-control" placeholder="Ejem: Club Colombia" name="txtMarca" maxlength="50"
-                                               value="">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-2 control-label">Cantidad de Inventario</label>
-                                    <div class="col-sm-4 input-group">
-                                        <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-                                        <input id="nombre" type="text" class="form-control" placeholder="Ejem: 50" name="txtInventario" maxlength="10"
-                                               value="">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-2 control-label">Costo Unitario</label>
-                                    <div class="col-sm-4 input-group">
-                                        <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-                                        <input id="nombre" type="text" class="form-control" placeholder="Ejem: $2500" name="txtCosto" maxlength="10"
-                                               value="">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-2 control-label">Precio de Venta</label>
-                                    <div class="col-sm-4 input-group">
-                                        <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-                                        <input id="nombre" type="text" class="form-control" placeholder="Ejem: $5000" name="txtPrecio" maxlength="7"
+                                        <span class="input-group-addon"><i class="fa fa-tags"></i></span>
+                                        <input id="nombre" type="text" class="form-control" placeholder="Debe ser menor al inventario total" name="txtCantidad" maxlength="10"
                                                value="">
                                     </div>
                                 </div>
                                 
-                            </div>
-                            <!-- /.box-body -->
+                                                                
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">Empleado</label>
+                                    <div class="col-sm-4 input-group">
+                                        <span class="input-group-addon"><i class="fa fa-tags"></i></span>
+                                        <select class="form-control"  name="cboEmpleado" autofocus=""  required="">
+                                            <option value="0">Seleccione un empleado</option>
+                                            <c:forEach items="${empleados}" var="empl">
+                                                <option value="${empl.idEmpleado}"  
+                                                        
+                                                        >${empl.apellidoEmpleado}</option>
+                                            </c:forEach>
+                                        </select>
+                                    </div>                                  
+                                </div>
+                           
                             <div class="box-footer">
-                                <!--button type="reset" class="btn btn-danger"><i class="fa fa-close red" oncancel="srvUsuario?accion=listarUsuarios"></i> Cancelar</button-->
-                                <a href="srvProducto?accion=listarProductos" type="reset" class="btn btn-danger">
+                                <a href="srvVenta?accion=listarVentas" type="reset" class="btn btn-danger">
                                     <i class="fa-close red"></i>Cancelar</a> 
                                 <button type="submit" id="" name="btnRegistrar" value="Registrar" class="btn btn-success"><i class="fa fa-floppy-o"></i> Registrar</button>
 
                             </div>
-                            <!-- /.box-footer -->
+                            
                         </form>
                     </div>
                 </section> 
