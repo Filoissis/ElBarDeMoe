@@ -1,7 +1,7 @@
 <%-- 
-    Document   : formVendedor
-    Created on : 28/06/2022, 06:16:04 PM
-    Author     : Issis Rodriguez
+    Document   : index
+    Created on : 23/08/2022, 01:15:33 AM
+    Author     : Issis Rodriguez, Jennifer Delgado Lozano, Deisy Juliana Matiz Gutierrez
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -13,7 +13,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>Sistema Bodega| Inicio</title>
+        <title>Sistema SAIB | Inicio</title>
         <!-- Tell the browser to be responsive to screen width -->
         <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
         <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
@@ -41,7 +41,7 @@
                     <!-- mini logo for sidebar mini 50x50 pixels -->
                     <span class="logo-mini"><b>S</b>BL</span>
                     <!-- logo for regular state and mobile devices -->
-                    <span class="logo-lg"><b>Sistema </b>Bodega</span>
+                    <span class="logo-lg"><b>Sistema </b>SAIB</span>
                 </a>
 
                 <!-- Header Navbar -->
@@ -96,7 +96,7 @@
                             <img src="dist/img/ElBarDeMoe160x160.jpg" class="img-circle" alt="User Image">
                         </div>
                         <div class="pull-left info">
-                            <p>Bienvenido, ${vendedor.nombreUsuario}</p>
+                            <p>Bienvenido, ${vendedor.nombreUsuario} </p>
                             <!-- Status -->
                             <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
                         </div>
@@ -118,15 +118,18 @@
                     <ul class="sidebar-menu" data-widget="tree">
                         <li class="header">INICIO</li>
                         <!-- Optionally, you can add icons to the links -->
-                        <li class="active"><a href="#"><i class="fa fa-link"></i> <span>Panel Administrativo</span></a></li>
-                        <li class="treeview active">
-                            <a href="#"><i class="glyphicon glyphicon-th-large"></i> <span>Pedidos</span>
+                        <li class="treeview">
+                            <a href="#"><i class="glyphicon glyphicon-th-large"></i> <span>Registros</span>
                                 <span class="pull-right-container">
                                     <i class="fa fa-angle-left pull-right"></i>
                                 </span>
                             </a>
                             <ul class="treeview-menu">
-                                <li><a href="srvPedido?accion=listarPedidos"><i class="fa fa-archive"></i>Pedidos</a></li>
+                                <li><a href="<c:url value="srvPedido">
+                                                       <c:param name="accion" value="listarPedidosVendedor" />
+                                                       <c:param name="idven" value="${vendedor.idUsuario}" />
+                                                   </c:url>"><i class="fa fa-tags"></i>Mis Pedidos</a></li> 
+                                <li><a href="srvProducto?accion=listarProductosVendedor"><i class="fa fa-cube"></i>Productos</a></li>
                             </ul>
                         </li>
                         <li class="treeview">
@@ -136,8 +139,14 @@
                                 </span>
                             </a>
                             <ul class="treeview-menu">
-                                <li><a href="srvVenta?accion=nuevoVenta"><i class="fa fa-cart-arrow-down"></i>Nueva Venta</a></li>
-                                <!--li><a href="#"><i class="fa fa-tags"></i>Administrar Ventas</a></li-->
+                                <li><a href="srvVenta?accion=nuevaVentaVendedor"><i class="fa fa-cart-arrow-down"></i>Nueva Venta</a></li>
+                                <li><a href="<c:url value="srvVenta">
+                                                       <c:param name="accion" value="listarVentasVendedor" />
+                                                       <c:param name="idven" value="${vendedor.idUsuario}" />
+                                                   </c:url>"><i class="fa fa-tags"></i>Mis Ventas</a></li> 
+                                
+                                
+                                
                             </ul>
                         </li>
                     </ul>
@@ -151,8 +160,8 @@
                 <!-- Content Header (Page header) -->
                 <section class="content-header">
                     <h1>
-                        Page Header
-                        <small>Optional description</small>
+                        Gestión de Ventas y pedidos
+                        <small>Pantalla de Vendedor</small>
                     </h1>
                     <ol class="breadcrumb">
                         <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
@@ -167,14 +176,17 @@
                             <!-- small box -->
                             <div class="small-box bg-aqua">
                                 <div class="inner">
-                                    <h3>150</h3>
+                                    <h3>8</h3>
 
-                                    <p>Nuevos Clientes</p>
+                                    <p>Nuevas Ventas</p>
                                 </div>
                                 <div class="icon">
                                     <i class="ion ion-bag"></i>
                                 </div>
-                                <a href="#" class="small-box-footer">Más info <i class="fa fa-arrow-circle-right"></i></a>
+                                <a href="<c:url value="srvVenta">
+                                       <c:param name="accion" value="listarVentasVendedor" />
+                                       <c:param name="idven" value="${vendedor.idUsuario}" />
+                                   </c:url>" class="small-box-footer">Más info <i class="fa fa-arrow-circle-right"></i></a>
                             </div>
                         </div>
                         <!-- ./col -->
@@ -182,14 +194,17 @@
                             <!-- small box -->
                             <div class="small-box bg-green">
                                 <div class="inner">
-                                    <h3>53<sup style="font-size: 20px">%</sup></h3>
+                                    <h3>3<sup style="font-size: 20px">%</sup></h3>
 
-                                    <p>Bounce Rate</p>
+                                    <p>Pedidos Realizados</p>
                                 </div>
                                 <div class="icon">
                                     <i class="ion ion-stats-bars"></i>
                                 </div>
-                                <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                                <a href="<c:url value="srvPedido">
+                                       <c:param name="accion" value="leerPedidoVendedor" />
+                                       <c:param name="idped" value="${ped.idPedido}" />
+                                   </c:url>" class="small-box-footer">Más info <i class="fa fa-arrow-circle-right"></i></a>
                             </div>
                         </div>
                         <!-- ./col -->
@@ -197,14 +212,14 @@
                             <!-- small box -->
                             <div class="small-box bg-yellow">
                                 <div class="inner">
-                                    <h3>44</h3>
+                                    <h3>1</h3>
 
-                                    <p>User Registrations</p>
+                                    <p>Usuario Registrado</p>
                                 </div>
                                 <div class="icon">
                                     <i class="ion ion-person-add"></i>
                                 </div>
-                                <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                                <a href="#" class="small-box-footer">Más info <i class="fa fa-arrow-circle-right"></i></a>
                             </div>
                         </div>
                         <!-- ./col -->
@@ -219,7 +234,7 @@
                                 <div class="icon">
                                     <i class="ion ion-pie-graph"></i>
                                 </div>
-                                <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                                <a href="#" class="small-box-footer">Más info <i class="fa fa-arrow-circle-right"></i></a>
                             </div>
                         </div>
                         <!-- ./col -->
@@ -233,7 +248,7 @@
             <footer class="main-footer">
                 <!-- To the right -->
                 <div class="pull-right hidden-xs">
-                    TriSolution - Issis Rodriguez, Jennifer Delgado, Deisy Matiz
+                    Tresolution - Issis Rodriguez, Jennifer Delgado, Deisy Matiz
                 </div>
                 <!-- Default to the left -->
                 <strong>Copyright &copy; 2022 <a href="https://www.sena.edu.co/">SENA</a>.</strong> Todos los derechos reservados.

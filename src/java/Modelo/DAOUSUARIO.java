@@ -124,7 +124,7 @@ public class DAOUSUARIO extends Conexion {
     }
     
     public void eliminarUsuario(Usuario usu) throws Exception{
-        String sql = "{ call mydb.DeleteUsuarioById("+ usu.getIdUsuario() + ")}";
+        String sql = "{ call mydb.DeleteUsuarioById("+ usu.getIdUsuario() + ", " + (usu.isEstado() == true ? "1": "0") + ")}";
         
         try{
            this.conectar(false);

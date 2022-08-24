@@ -8,6 +8,14 @@
         <servlet-name>srvUsuario</servlet-name>
         <url-pattern>/srvUsuario</url-pattern>
     </servlet-mapping>
+    <servlet>
+        <servlet-name>srvVenta</servlet-name>
+        <servlet-class>Controlador.srvVenta</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>srvVenta</servlet-name>
+        <url-pattern>/srvVenta</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
             30

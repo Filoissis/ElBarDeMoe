@@ -265,6 +265,13 @@
                             <h3 class="box-title">Reporte de Ventas Realizadas</h3>
                         </div>
                         <div class="box-body">
+                            <div>
+                                <form target="_blank" action="../srvVenta" id="frmReporte" method="post">
+                                    <input type="hidden" name="accion" id="accion">
+                                    <button onclick="reporte('exportarReporteVentas')" type="button" class="btn btn-sm btn-outline-pimary"><i class="fa fa-file-pdf-o"></i> Exportar PDF</button>
+                                    <input type="hidden" name="lista" id="lista">
+                                </form>
+                            </div>
                             <div class="table-responsive" >                                 
                                 <table class="table table-bordered table-striped dataTable table-hover" id="tablaVentas" class="display">
                                     <thead>
@@ -331,7 +338,7 @@
         <script src="bower_components/datatables.net/js/jquery.dataTables.min.js" type="text/javascript"></script>
         <script src="bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js" type="text/javascript"></script>
         <script src="sweetalert/sweetalert.js" type="text/javascript"></script>
-        
+        <script src="js/funcionesVentas.js" type="text/javascript"></script>
         
         <script>
             $(document).ready(function () {

@@ -6,7 +6,6 @@ import Modelo.Producto;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Set;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -26,6 +25,9 @@ public class srvProducto extends HttpServlet {
                 switch(accion){
                     case "listarProductos":
                         listarProducto(request, response);
+                        break;
+                    case "listarProductosVendedor":
+                        listarProductoVendedor(request, response);
                         break;
                     case "nuevoProducto":
                         presentarFormulario(request, response);
@@ -116,6 +118,27 @@ public class srvProducto extends HttpServlet {
         
         try{
             this.getServletConfig().getServletContext().getRequestDispatcher("/vistas/productos.jsp").forward(request, response);
+        }catch(Exception ex){
+            request.setAttribute("msje", "No se pudo realizar la petición " + ex.getMessage());
+        }
+        
+    }
+    
+     private void listarProductoVendedor(HttpServletRequest request, HttpServletResponse response) {
+        DAOPRODUCTO dao = new DAOPRODUCTO();
+        List<Producto> prod = null;
+        try{
+            prod = dao.listarProductos();
+            request.setAttribute("productos", prod); 
+            
+        }catch(Exception e){
+            request.setAttribute("msje", "No se pudo listar los productos " + e.getMessage());
+        }finally{
+            dao = null;
+        }
+        
+        try{
+            this.getServletConfig().getServletContext().getRequestDispatcher("/vistas/productosVendedor.jsp").forward(request, response);
         }catch(Exception ex){
             request.setAttribute("msje", "No se pudo realizar la petición " + ex.getMessage());
         }

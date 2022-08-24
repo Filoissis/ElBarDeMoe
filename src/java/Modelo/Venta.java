@@ -59,6 +59,24 @@ public class Venta {
         this.empleado = empleado;
     }
     
+    public String getNombreCompleto(){
+        return this.empleado != null ? 
+                this.empleado.getNombreEmpleado() + " " + 
+                this.empleado.getApellidoEmpleado() : 
+                "---------";
+    }
+    
+    public String getTipoProducto(){
+        return this.producto != null ? 
+                this.producto.getTipoProducto() :
+                "------";
+    }
+    
+    public String getMarcaProducto(){
+        return this.producto != null ? 
+                this.producto.getMarcaProducto() :
+                "------";
+    }
     
     
 }

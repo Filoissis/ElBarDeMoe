@@ -46,10 +46,10 @@ public class DAOVENTA extends Conexion {
         ResultSet rs = null;
         String sql = "";
         
-        if (sale.getProducto().getIdProducto() > 0){
-            sql = "{ call mydb.GetVentaByProducto(" + sale.getProducto().getIdProducto() + ")}";
-        } else if(sale.getEmpleado().getIdEmpleado() > 0){
+        if(sale.getEmpleado().getIdEmpleado() > 0){
             sql = "{ call mydb.GetVentaByEmpleado(" + sale.getEmpleado().getIdEmpleado() + ")}";
+        } else if (sale.getProducto().getIdProducto() > 0){
+            sql = "{ call mydb.GetVentaByProducto(" + sale.getProducto().getIdProducto() + ")}";
         } else {
             sql = "{ call mydb.GetAllVentas()}";
         }

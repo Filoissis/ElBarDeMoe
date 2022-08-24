@@ -41,6 +41,39 @@ public class DAOPEDIDO extends Conexion {
         return pedidos;
     }
     
+    public List<Pedido> listarPedidos(Pedido pd) throws Exception {
+        List<Pedido> pedidos;
+        Pedido ped;
+        ResultSet rs = null;
+        String sql = "{ call mydb.GetPedidoByEmpleado(" + pd.getEmpleado().getIdEmpleado() + ")}";
+
+        try {
+            this.conectar(false);
+            rs = this.ejecutarOrdenDatos(sql);
+            pedidos = new ArrayList<>();
+            while (rs.next() == true) {
+                ped = new Pedido();
+                ped.setIdPedido(rs.getInt("idPedidoFactura"));
+                ped.setTipoProdPedido(rs.getString("PedTipoProducto"));
+                ped.setMarcaProdPedido(rs.getString("PedMarcaProducto"));
+                ped.setCantidadPedido(rs.getInt("PedCantidadProducto"));
+                ped.setCostoTotal(rs.getInt("PedCostoTotal"));
+                ped.setFechaPedido(rs.getDate("PedFecha"));
+                ped.setEstadoPedido(rs.getBoolean("PedActivo"));
+                ped.setProveedor(new Proveedor());
+                ped.getProveedor().setNombreProveedor(rs.getString("ProvNombre"));
+                ped.setEmpleado(new Empleado());
+                ped.getEmpleado().setApellidoEmpleado(rs.getString("EmplApellido"));
+                pedidos.add(ped);
+            }
+            this.cerrar(true);
+        } catch (Exception e) {
+            throw e;
+        } finally {
+        }
+        return pedidos;
+    }
+    
     public void registrarPedido(Pedido pedi) throws Exception {
         String sql;
                 
